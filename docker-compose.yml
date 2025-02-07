@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres-odonto-manager:
+    image: postgres:15.6
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: odonto-manager
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./compose/data/postgres:/var/lib/postgresql/data
+    networks:
+      - odonto-manager-network
+
+networks:
+  odonto-manager-network:
+    driver: bridge

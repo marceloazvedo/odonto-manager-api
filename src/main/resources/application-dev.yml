@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: odonto-manager
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+  resources:
+    cache-period: 0
+    static-locations: classpath:/static/
+    static-path-pattern: /static/**
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/odonto-manager
+    username: postgres
+    password: password
+  flyway:
+    enabled: true
+    validate-on-migrate: true
+    clean-on-validation-error: false
+    baselineOnMigration: true
+    url: jdbc:postgresql://localhost:5432/odonto-manager
+    password: password
+    user: postgres
+  logging:
+    level:
+      org.flywaydb: DEBUG
+
