@@ -11,6 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter
 import org.springframework.security.web.server.authentication.ServerAuthenticationConverter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsConfigurationSource
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebFluxSecurity
@@ -26,7 +29,7 @@ class SecurityConfiguration {
 
         http
             .csrf { it.disable() }
-            .cors { }
+            .cors { it.configurationSource(corsConfiguration()) }
             .authorizeExchange { authorize ->
                 authorize
                     .pathMatchers(HttpMethod.POST, "/users/authenticate", "/users").permitAll()
@@ -39,4 +42,19 @@ class SecurityConfiguration {
 
     @Bean
     fun bCryptPasswordEncoder() = BCryptPasswordEncoder()
+
+    fun corsConfiguration(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+
+        configuration.applyPermitDefaultValues()
+        configuration.allowedOrigins = listOf("http://localhost:3000")
+        configuration.allowedHeaders = listOf("*")
+        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "PATCH")
+        configuration.allowCredentials = true
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
+    }
+
 }
